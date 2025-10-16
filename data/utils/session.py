@@ -39,6 +39,7 @@ def getOptions(headless: bool = False):
 class Session:
     def __init__(self, headless: bool = False):
         self.driver = uc.Chrome(version_main=140, options=getOptions(headless=headless), service_log_path="debug.log", use_subprocess=True)
+        time.sleep(1)
         self.driver.get(HOME_URL)
 
     def close(self):
@@ -51,5 +52,7 @@ class Session:
 
 if __name__ == "__main__":
     session = Session()
-    time.sleep(1000)
-    session.close()
+    try:
+        time.sleep(1000)
+    finally:
+        session.close()
