@@ -1,0 +1,1 @@
+python -m PyInstaller --onefile --icon="bot_icone.ico" main.py
