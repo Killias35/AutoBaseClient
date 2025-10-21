@@ -10,6 +10,7 @@ from selenium.webdriver.common.by import By
 from selenium.webdriver.support.ui import WebDriverWait
 from selenium.webdriver.support import expected_conditions as EC
 from selenium.webdriver.common.keys import Keys
+from selenium.common.exceptions import UnexpectedAlertPresentException, NoAlertPresentException
 
 from conf.conf import VILLES, HOME_URL, EN_ACTIVITE, ACTIVITE, EFFECTIFS_MIN, EFFECTIFS_MAX
 from urllib.parse import urlencode
@@ -21,9 +22,20 @@ def filter_research(session: Session):
         "effectifs_min": EFFECTIFS_MIN,
         "effectifs_max": EFFECTIFS_MAX
     }
-
     final_url = f"{HOME_URL}?{urlencode(params)}"
-    session.driver.get(final_url)
+
+    try:
+        session.driver.get(final_url)
+    except UnexpectedAlertPresentException:
+        try:
+            alert = session.driver.switch_to.alert
+            print("⚠️ Alerte détectée :", alert.text)
+            alert.accept()  # Ferme la popup
+            time.sleep(1)
+            # Re-tente le chargement après coup
+            session.driver.get(final_url)
+        except NoAlertPresentException:
+            pass
     time.sleep(1)
     
     try:
@@ -34,7 +46,7 @@ def filter_research(session: Session):
         pass
 
     search_bar = WebDriverWait(session.driver, 10).until(EC.presence_of_element_located((By.CLASS_NAME, "search")))
-    time.sleep(0.5)
+    time.sleep(2)
 
     filters = session.driver.find_elements(By.CLASS_NAME, "filtres-prioritaires-button")
 

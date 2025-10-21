@@ -40,7 +40,7 @@ class Session:
     def __init__(self, headless: bool = False):
         self.driver = uc.Chrome(version_main=140, options=getOptions(headless=headless), service_log_path="debug.log", use_subprocess=True)
         time.sleep(1)
-        self.driver.get(HOME_URL)
+        self.driver.get("https://google.com")
 
     def close(self):
         # fermer proprement
