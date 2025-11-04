@@ -7,11 +7,21 @@ if project_root not in sys.path:
 
 
 from data.main import main as main_data
+from data.services.get_city_in_range import villes_autour, trier_par_region_departement
+from conf.conf import VILLE
 
 def main():
-    print("MAIN")
+    regions = trier_par_region_departement(villes_autour(VILLE))
+    regions_to_search = []
+    villes_to_search = []
+    for region, deps in regions.items():
+        for dep, villes in deps.items():
+            if region not in regions_to_search: regions_to_search.append(region)
+            if dep not in villes_to_search: villes_to_search.append(villes)
+        
     data = main_data()
-    
+    # https://annuaire.experts-comptables.org/tous-les-cabinets-experts-comptables-par-region/nouvelle-aquitaine/gironde
 
 if __name__ == "__main__":
+    print("Programme principal...")
     main()

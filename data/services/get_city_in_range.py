@@ -1,6 +1,6 @@
 import requests, zipfile, io, csv, math, collections
 
-RAYON_KM = 30
+RAYON_KM = 20
 BASE_URL = "https://download.geonames.org/export/dump/"
 
 def load_geonames_data():
