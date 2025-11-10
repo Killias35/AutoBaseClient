@@ -10,18 +10,20 @@ from data.services.get_pappers_datas import get_pappers_datas
 from data.services.get_mails import find_company_emails
 from conf.utils.json_utils import save_json
 from data.utils.session import Session
+from data.services.get_villes_utiles import get_villes_utiles
 
-def main() -> dict:
+def main(regions: list, departements: list, villes: list) -> dict:
     """
     Récupere les données de pappers puis tente d'y trouver des mails a chaque entreprise
     """
     data = {}
     session = Session()
     try:
-        filter_research(session)
-        names = get_pappers_datas(session)
-        data = find_company_emails(session, names)
-        save_json(data, "company_datas.json")
+        villes_utiles = get_villes_utiles(session, regions, departements, villes)
+        filter_research(session, villes_utiles)
+        datas = get_pappers_datas(session)
+        data = find_company_emails(session, datas)
+        save_json(datas, "company_datas.json")
     finally:
         try:
             time.sleep(1)
@@ -33,4 +35,4 @@ def main() -> dict:
 
 
 if __name__ == "__main__":
-    main()
+    main([], [], [])

@@ -68,15 +68,17 @@ def extract_emails_from_url(session: Session, url: str)->set[str]:
     except Exception:
         return set()
 
-def find_company_emails(session: Session, companies: list[str]):
+def find_company_emails(session: Session, companies_datas: dict[str, dict[str, list[str]]])-> dict[str, list[str]]:
     results = {}
-    for name in companies:
+    for name, data in companies_datas.items():
         query = f"{name} mails"
         links = search_duckduckgo(session, query)
         found = set()
         for link in links:
             found |= extract_emails_from_url(session, link)
             time.sleep(1)
+        data["emails"] = list(found)
+        companies_datas[name] = data
         results[name] = list(found)
     return results
 
@@ -84,6 +86,6 @@ def find_company_emails(session: Session, companies: list[str]):
 if __name__ == "__main__":
     # Exemple
     session = Session()
-    companies = ["suleyman bouillet", "ocap recrutement"]
+    companies = {"ocap": {"links": ["https://www.ocap.fr"], "emails": []}}
     print(find_company_emails(session, companies))
     session.close()

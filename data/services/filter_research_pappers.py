@@ -12,15 +12,16 @@ from selenium.webdriver.support import expected_conditions as EC
 from selenium.webdriver.common.keys import Keys
 from selenium.common.exceptions import UnexpectedAlertPresentException, NoAlertPresentException
 
-from conf.conf import VILLES, HOME_URL, EN_ACTIVITE, ACTIVITE, EFFECTIFS_MIN, EFFECTIFS_MAX
+from conf.conf import HOME_URL, EN_ACTIVITE, ACTIVITE, EFFECTIFS_MIN, EFFECTIFS_MAX, CIBLE_ACTIVITE_PRINCIPALE
 from urllib.parse import urlencode
 
-def filter_research(session: Session):
+def filter_research(session: Session, villes: list[str]):
     params = {
         "en_activite": EN_ACTIVITE,
         "activite": ACTIVITE,
         "effectifs_min": EFFECTIFS_MIN,
-        "effectifs_max": EFFECTIFS_MAX
+        "effectifs_max": EFFECTIFS_MAX,
+        "ciblerActivitePrincipale": CIBLE_ACTIVITE_PRINCIPALE
     }
     final_url = f"{HOME_URL}?{urlencode(params)}"
 
@@ -54,7 +55,7 @@ def filter_research(session: Session):
     ville_btn.click()
     time.sleep(0.5)
 
-    for ville in VILLES:
+    for ville in villes:
         ville_search_bar = session.driver.find_element(By.CSS_SELECTOR, "input[class='el-select__input']")
         ville_search_bar.clear()
         ville_search_bar.send_keys(ville)

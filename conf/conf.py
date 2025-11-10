@@ -12,7 +12,10 @@ VILLE = "Bordeaux"
 
 # filter
 
-EN_ACTIVITE = "true"
+ANNUAIRE_EXPERT_COMPTABLE_URL = "https://annuaire.experts-comptables.org/tous-les-cabinets-experts-comptables-par-region"
+
+EN_ACTIVITE = True
 ACTIVITE = "69.20Z"
 EFFECTIFS_MIN = 6
 EFFECTIFS_MAX = 500000
+CIBLE_ACTIVITE_PRINCIPALE = True
