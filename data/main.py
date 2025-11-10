@@ -11,6 +11,7 @@ from data.services.get_mails import find_company_emails
 from conf.utils.json_utils import save_json
 from data.utils.session import Session
 from data.services.get_villes_utiles import get_villes_utiles
+from data.services.this_company_still_exist import get_active_companies
 
 def main(regions: list, departements: list, villes: list) -> dict:
     """
@@ -22,7 +23,8 @@ def main(regions: list, departements: list, villes: list) -> dict:
         villes_utiles = get_villes_utiles(session, regions, departements, villes)
         filter_research(session, villes_utiles)
         datas = get_pappers_datas(session)
-        data = find_company_emails(session, datas)
+        datas = find_company_emails(session, datas)
+        data = get_active_companies(session, datas)
         save_json(datas, "company_datas.json")
     finally:
         try:

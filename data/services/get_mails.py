@@ -68,7 +68,7 @@ def extract_emails_from_url(session: Session, url: str)->set[str]:
     except Exception:
         return set()
 
-def find_company_emails(session: Session, companies_datas: dict[str, dict[str, list[str]]])-> dict[str, list[str]]:
+def find_company_emails(session: Session, companies_datas: dict[str, dict[str, list[str]]])-> dict[str, dict[str, list[str]]]:
     results = {}
     for name, data in companies_datas.items():
         query = f"{name} mails"
@@ -78,8 +78,7 @@ def find_company_emails(session: Session, companies_datas: dict[str, dict[str, l
             found |= extract_emails_from_url(session, link)
             time.sleep(1)
         data["emails"] = list(found)
-        companies_datas[name] = data
-        results[name] = list(found)
+        results[name] = data
     return results
 
 

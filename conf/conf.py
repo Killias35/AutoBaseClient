@@ -13,6 +13,7 @@ VILLE = "Bordeaux"
 # filter
 
 ANNUAIRE_EXPERT_COMPTABLE_URL = "https://annuaire.experts-comptables.org/tous-les-cabinets-experts-comptables-par-region"
+SOCIETE_COM_URL = "https://www.societe.com/"
 
 EN_ACTIVITE = True
 ACTIVITE = "69.20Z"
