@@ -38,7 +38,7 @@ def getOptions(headless: bool = False):
     
 class Session:
     def __init__(self, headless: bool = False):
-        self.driver = uc.Chrome(version_main=140, options=getOptions(headless=headless), service_log_path="debug.log", use_subprocess=True)
+        self.driver = uc.Chrome(version_main=142, options=getOptions(headless=headless), service_log_path="debug.log", use_subprocess=True)
         time.sleep(1)
         self.driver.get("https://google.com")
 

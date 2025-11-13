@@ -14,8 +14,13 @@ from selenium.webdriver.support import expected_conditions as EC
 def get_pappers_datas(session: Session)-> dict[str, dict[str, list[str]]]:
     """
     Renvoie une liste de nom d'entreprise
+
+    {
+        "nom d'entreprise": {
+            "dirigeant": []
+    }
     """
-    nb_company = session.driver.find_element(By.CSS_SELECTOR, 'p.color-entreprises').text.split(" ")[0]
+    nb_company = session.driver.find_element(By.CSS_SELECTOR, 'p.color-entreprises').text.split(" ")[0].replace('\u202f', '')
     print(nb_company)
     company_names = []
     company_links = []
@@ -53,16 +58,19 @@ def get_pappers_datas(session: Session)-> dict[str, dict[str, list[str]]]:
         link = company_links[i]
         name = company_names[i]
         session.driver.get(link)
-        time.sleep(.5)
-        td = WebDriverWait(session.driver, 10).until(EC.presence_of_element_located((By.CLASS_NAME, 'info-dirigeant')))
-        dirigeants = td.find_elements(By.TAG_NAME, 'a')
-        lst = []
-        for dirigeant in dirigeants:
-            if "dirigeant" in str(dirigeant.get_attribute("href")):
-                lst.append("Dirigeant " + dirigeant.text)
-            else:
-                lst.append("Pas un dirigeant " + dirigeant.text)
-        datas[name] = {"dirigeants": lst}
+        time.sleep(2)
+        try:
+            td = WebDriverWait(session.driver, 10).until(EC.presence_of_element_located((By.CLASS_NAME, 'info-dirigeant')))
+            dirigeants = td.find_elements(By.TAG_NAME, 'a')
+            lst = []
+            for dirigeant in dirigeants:
+                if "dirigeant" in str(dirigeant.get_attribute("href")):
+                    lst.append("Dirigeant " + dirigeant.text)
+                else:
+                    lst.append("Pas un dirigeant " + dirigeant.text)
+            datas[name] = {"dirigeants": lst}
+        except Exception:
+            datas[name] = {"dirigeants": []}
 
 
     save_json({"datas": datas}, "src/company_names.json")

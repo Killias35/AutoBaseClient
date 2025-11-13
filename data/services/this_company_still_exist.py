@@ -13,18 +13,39 @@ from selenium.webdriver.common.keys import Keys
 from conf.conf import SOCIETE_COM_URL
 
 
-def get_active_companies(session: Session, companies_datas: dict[str, dict[str, list[str]]])-> dict[str, dict[str, list[str]]]:
-    results = {}
+def get_active_companies(session: Session, companies_datas: dict[str, dict])-> dict[str, dict]:
+    """
+    prend ce type de dict
+
+    {
+        "nom d'entreprise": {
+            "dirigeant": [],
+            "emails": []
+    }
+
+    et trie les entreprises qui sont encore en activités pour sortir
+
+    {
+        "nom d'entreprise": {
+            "dirigeant": [],
+            "emails": [],
+            "active": True
+    }
+    """
     for name, data in companies_datas.items():
-        if this_company_still_exist(session, data):
-            results[name] = data
-    return results
+        if this_company_still_exist(session, name):
+            data["active"] = True
+            companies_datas[name] = data
+        else:
+            data["active"] = False
+            companies_datas[name] = data
+    return companies_datas
 
 
-def this_company_still_exist(session: Session, companies_datas: dict[str, list[str]])-> bool:
+def this_company_still_exist(session: Session, name : str)-> bool:
     session.driver.get(SOCIETE_COM_URL)
     input_bar = WebDriverWait(session.driver, 10).until(EC.presence_of_element_located((By.CSS_SELECTOR, 'input[name="q"]')))
-    input_bar.send_keys(companies_datas["name"][0])
+    input_bar.send_keys(name)
     # envoyer aussi numero departement
     input_bar.send_keys(Keys.ENTER)
     list_box = WebDriverWait(session.driver, 10).until(EC.presence_of_element_located((By.CSS_SELECTOR, 'ul[role="listbox"]')))

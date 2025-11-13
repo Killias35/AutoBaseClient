@@ -18,7 +18,7 @@ def search_duckduckgo(session: Session, query, max_results=5):
     url = "https://google.com/search"
     params = {"q": query}
     session.driver.get(f"{url}?{urlencode(params)}")
-    time.sleep(1)
+    time.sleep(2)
     links = []
     center = session.driver.find_element(By.ID, "center_col")
     for a in center.find_elements(By.TAG_NAME, "a"):
@@ -69,6 +69,21 @@ def extract_emails_from_url(session: Session, url: str)->set[str]:
         return set()
 
 def find_company_emails(session: Session, companies_datas: dict[str, dict[str, list[str]]])-> dict[str, dict[str, list[str]]]:
+    """
+    Prend ce type de dict
+    {
+        "nom d'entreprise": {
+            "dirigeant": []
+    }
+
+    et sort
+
+    {
+        "nom d'entreprise": {
+            "dirigeant": [],
+            "emails": []
+    }
+    """
     results = {}
     for name, data in companies_datas.items():
         query = f"{name} mails"
@@ -85,6 +100,6 @@ def find_company_emails(session: Session, companies_datas: dict[str, dict[str, l
 if __name__ == "__main__":
     # Exemple
     session = Session()
-    companies = {"ocap": {"links": ["https://www.ocap.fr"], "emails": []}}
+    companies = {"ocap": {"dirigeant": [], "emails": [], "active": True}}
     print(find_company_emails(session, companies))
     session.close()

@@ -1,6 +1,13 @@
-import requests, zipfile, io, csv, math, collections
+import os, time
+import sys
 
-RAYON_KM = 20
+project_root = os.path.abspath(os.path.join(os.path.dirname(__file__), "../../"))
+if project_root not in sys.path:
+    sys.path.insert(0, project_root)
+    
+import requests, zipfile, io, csv, math, collections
+from conf.conf import RAYON_KM
+
 BASE_URL = "https://download.geonames.org/export/dump/"
 
 def load_geonames_data():
