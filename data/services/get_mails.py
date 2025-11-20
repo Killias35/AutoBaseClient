@@ -8,8 +8,6 @@ if project_root not in sys.path:
 
 from data.utils.session import Session
 from selenium.webdriver.common.by import By
-from selenium.webdriver.support import expected_conditions as EC
-
 import re, time
 
 EMAIL_RE = re.compile(r"[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\.[A-Za-z]{2,}", re.IGNORECASE)
@@ -59,9 +57,9 @@ def extract_emails_from_url(session: Session, url: str)->set[str]:
             end = min(len(text), idx + 64)
             window = text[start:end]
             for m in EMAIL_RE.finditer(window):
-                e = m.group(0).strip(".,;:()[]\"'<>")  # clean trailing punctuation
+                e = m.group(0).strip(".,;:()[]\"'<>").lower()  # clean trailing punctuation
                 if quick_validate(e):
-                    emails.add(e.lower())
+                    emails.add(e)
             idx = text.find("@", idx + 1)
 
         return set(emails)
