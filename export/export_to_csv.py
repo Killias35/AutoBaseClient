@@ -8,12 +8,21 @@ if project_root not in sys.path:
 import csv
 from conf.utils.json_utils import load_json
 
-def export_to_csv(data: dict, filename: str = "emails.csv"):
+def export_to_csv(datas: dict, filename: str = "entreprises.csv"):
     with open(filename, "w", newline="", encoding="utf-8") as f:
         writer = csv.writer(f)
         writer.writerow(["entreprise", "emails"])
-        for company, emails in data.items():
-            writer.writerow([company, ", ".join(sorted(set(emails)))])
+        for name, data in datas.items():
+            active = data["active"]
+            dirigeant = str(data["dirigeant"])
+            emails = data["emails"]
+
+            if not active:
+                continue
+
+            for email in emails:
+                writer.writerow([name, email, dirigeant])
+            
     print(f"✅ Fichier sauvegardé : {filename}")
 
 if __name__ == "__main__":

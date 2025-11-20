@@ -72,6 +72,7 @@ def find_company_emails(session: Session, companies_datas: dict[str, dict[str, l
     {
         "nom d'entreprise": {
             "dirigeant": []
+            "active": bool
     }
 
     et sort
@@ -79,11 +80,14 @@ def find_company_emails(session: Session, companies_datas: dict[str, dict[str, l
     {
         "nom d'entreprise": {
             "dirigeant": [],
+            "active": bool
             "emails": []
     }
     """
     results = {}
     for name, data in companies_datas.items():
+        if not data["active"]:
+            continue
         query = f"{name} mails"
         links = search_duckduckgo(session, query)
         found = set()

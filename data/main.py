@@ -13,19 +13,16 @@ from data.utils.session import Session
 from data.services.get_villes_utiles import get_villes_utiles
 from data.services.this_company_still_exist import get_active_companies
 
-def main(regions: list, departements: list, villes: list, debug: bool = False) -> dict:
+def main(regions: list, departements: list, villes: list) -> dict:
     """
     Récupere les données de pappers puis tente d'y trouver des mails a chaque entreprise
     """
-    data = {}
+    datas = {}
     session = Session()
     try:
         villes_utiles = get_villes_utiles(session, regions, departements, villes)
-        if not debug: 
-            filter_research(session, villes_utiles)
-            datas = get_pappers_datas(session)
-        else: 
-            datas = {"ocaprecrutement": {"dirigeant": []}}
+        filter_research(session, villes_utiles)
+        datas = get_pappers_datas(session)
         datas = get_active_companies(session, datas)
         datas = find_company_emails(session, datas)
 
@@ -41,4 +38,4 @@ def main(regions: list, departements: list, villes: list, debug: bool = False) -
 
 
 if __name__ == "__main__":
-    main([], [], [], True)
+    main([], [], [])

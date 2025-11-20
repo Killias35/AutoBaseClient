@@ -7,6 +7,7 @@ if project_root not in sys.path:
 
 
 from data.main import main as main_data
+from export.export_to_csv import export_to_csv
 from data.services.get_city_in_range import villes_autour, trier_par_region_departement
 from conf.conf import VILLE
 
@@ -23,6 +24,8 @@ def main():
                 if ville not in villes_to_search: villes_to_search.append(ville)
     
     data = main_data(regions_to_search, deps_to_search, villes_to_search)
+    todayes = time.strftime("%Y-%m-%d")
+    export_to_csv(data, f"company_datas_{VILLE}_{todayes}.csv")
     # https://annuaire.experts-comptables.org/tous-les-cabinets-experts-comptables-par-region/nouvelle-aquitaine/gironde
 
 if __name__ == "__main__":
