@@ -7,7 +7,7 @@ if project_root not in sys.path:
 
 
 HOME_URL = "https://www.pappers.fr/recherche"
-VILLE = "Bordeaux"
+VILLE = "Rennes"
 RAYON_KM = 20  # 20 km normalement
 
 # filter

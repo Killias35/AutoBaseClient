@@ -69,6 +69,7 @@ def villes_autour(ville):
             departement = admin2.get(a2, None)
             if region is None or departement is None:
                 continue
+            if region == "Brittany": region = "Bretagne"
             proches.append((n, d, region, departement))
     proches.sort(key=lambda x: x[1])
     return proches

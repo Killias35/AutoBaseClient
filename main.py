@@ -29,5 +29,9 @@ def main():
     # https://annuaire.experts-comptables.org/tous-les-cabinets-experts-comptables-par-region/nouvelle-aquitaine/gironde
 
 if __name__ == "__main__":
-    print("Programme principal...")
-    main()
+    try:
+        print("Programme principal...")
+        main()
+    except Exception as e:
+        print("Une erreur est survenue : ", e)
+        time.sleep(120)

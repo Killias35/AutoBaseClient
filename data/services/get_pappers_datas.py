@@ -21,7 +21,7 @@ def get_pappers_datas(session: Session)-> dict[str, dict[str, list[str]]]:
     }
     """
     nb_company = session.driver.find_element(By.CSS_SELECTOR, 'p.color-entreprises').text.split(" ")[0].replace('\u202f', '')
-    print(nb_company)
+    print(f"Nombre d'entreprise a trouver: {nb_company}\n")
     company_names = []
     company_links = []
     datas = {}
@@ -29,6 +29,7 @@ def get_pappers_datas(session: Session)-> dict[str, dict[str, list[str]]]:
     tour = 0
     while len(company_names) < int(nb_company) and tour < 3:
         try:
+            time.sleep(1)
             a = WebDriverWait(session.driver, 10).until(EC.presence_of_all_elements_located((By.CSS_SELECTOR, 'div.nom-entreprise a')))
             names = [link.text for link in a if not link.text in company_names]
             links = [link.get_attribute("href") for link in a if not link.get_attribute("href") in company_links]

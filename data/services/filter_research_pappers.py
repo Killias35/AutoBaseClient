@@ -24,7 +24,6 @@ def filter_research(session: Session, villes: list[str]):
         "ciblerActivitePrincipale": CIBLE_ACTIVITE_PRINCIPALE
     }
     final_url = f"{HOME_URL}?{urlencode(params)}"
-
     try:
         session.driver.get(final_url)
     except UnexpectedAlertPresentException:
