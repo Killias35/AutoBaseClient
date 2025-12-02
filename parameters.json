@@ -1,0 +1,9 @@
+{
+    "ville": "Bordeaux",
+    "rayon": 20,
+    "en_activite": true,
+    "activite": "69.20Z",
+    "effectifs_min": 6,
+    "effectifs_max": 500000,
+    "cible_activite_principale": true
+}

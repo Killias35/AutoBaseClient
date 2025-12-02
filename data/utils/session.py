@@ -21,6 +21,7 @@ def getOptions(headless: bool = False):
     options.add_argument("--profile-directory=Default")
     options.add_argument("--disable-gpu")
     options.add_argument("--no-sandbox")
+    options.page_load_strategy = 'eager'
     
     options.add_argument("--disable-guest-mode")
     options.add_argument("--no-first-run")

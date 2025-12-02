@@ -23,7 +23,7 @@ def main(regions: list, departements: list, villes: list) -> dict:
         villes_utiles = get_villes_utiles(session, regions, departements, villes)
         print(f"{len(villes_utiles)} villes utiles")        
         if len(villes_utiles) == 0: return datas
-        
+    
         filter_research(session, villes_utiles)
         datas = get_pappers_datas(session)
         datas = get_active_companies(session, datas)
@@ -31,10 +31,7 @@ def main(regions: list, departements: list, villes: list) -> dict:
 
         save_json(datas, "company_datas.json")
     finally:
-        try:
-            time.sleep(1)
-        except Exception:
-            pass
+        time.sleep(5)
         session.close()
         
     return datas

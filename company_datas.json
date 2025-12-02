@@ -1,18 +1,40 @@
 {
-    "ocaprecrutement": {
-        "dirigeant": [],
-        "active": false,
+    "OMGA DE NORMANDIE ORGANISME MIXTE DE GESTION AGREE DE NORMANDIE": {
+        "dirigeants": [],
+        "active": true,
         "emails": [
-            "x3econtact@ocpgroup.ma",
-            "contact@ocaprecrutement.com",
-            "u003ebp-data-protection@ocp.fr",
-            "u003ebreizh-sec@ocp.fr",
-            "recrutement@ocp-ms.com",
-            "u003econtact@ocaprecrutement.com",
-            "bp-data-protection@ocp.fr",
-            "u003erecrutement@ocp-ms.com",
-            "monaco-serviceclient@cpm.mc",
-            "breizh-sec@ocp.fr"
+            "5563f73de1eae2495278344b496ccdc8@kui60rp8519m9wx086.pappers.fr"
+        ]
+    },
+    "VISEEON BETTON": {
+        "dirigeants": [
+            "Dirigeant Beaumanoir Guillaume"
+        ],
+        "active": true,
+        "emails": [
+            "guy.fourmy@viseeon.com",
+            "john.doe@acme.com"
+        ]
+    },
+    "SOCOGEC IN EXTENSO ORNE": {
+        "dirigeants": [
+            "Pas un dirigeant GARNIER PIERRE-THOMAS SARL",
+            "Pas un dirigeant TOP EXPERTISE",
+            "Dirigeant Yver Jean-Max"
+        ],
+        "active": true,
+        "emails": [
+            "flags@2x.png",
+            "5563f73de1eae2495278344b496ccdc8@kui60rp8519m9wx086.pappers.fr",
+            "alencon@inextenso.fr",
+            "agnesferchaud@yahoo.fr"
+        ]
+    },
+    "AGC COGEDIS": {
+        "dirigeants": [],
+        "active": true,
+        "emails": [
+            "cogedis@cogedis.com"
         ]
     }
 }

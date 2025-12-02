@@ -1,4 +1,4 @@
-import os
+import os, time
 import sys
 
 project_root = os.path.abspath(os.path.join(os.path.dirname(__file__), "../../"))
@@ -44,20 +44,32 @@ def get_active_companies(session: Session, companies_datas: dict[str, dict])-> d
 
 def this_company_still_exist(session: Session, name : str)-> bool:
     session.driver.get(SOCIETE_COM_URL)
-    input_bar = WebDriverWait(session.driver, 10).until(EC.presence_of_element_located((By.CSS_SELECTOR, 'input[name="q"]')))
-    input_bar.send_keys(name)
-    # envoyer aussi numero departement
-    input_bar.send_keys(Keys.ENTER)
-    list_box = WebDriverWait(session.driver, 10).until(EC.presence_of_element_located((By.CSS_SELECTOR, 'ul[role="listbox"]')))
-    lis = list_box.find_elements(By.TAG_NAME, "li")
-    if len(lis) > 0:
-        lis[0].click()
-        section = WebDriverWait(session.driver, 10).until(EC.presence_of_element_located((By.CSS_SELECTOR, 'section[id="identite"]')))
-        active = False
+    try:
         try:
-            active = section.find_element(By.CLASS_NAME, "ui-tag is-Success") is not None
+            accept_cookies = WebDriverWait(session.driver, 10).until(EC.presence_of_element_located((By.CSS_SELECTOR, 'button[id="didomi-notice-agree-button"]')))
+            accept_cookies.click()
+            time.sleep(1)
         except Exception:
             pass
-        return active
-    else:
-        return False
+        input_bar = WebDriverWait(session.driver, 10).until(EC.presence_of_element_located((By.CSS_SELECTOR, 'input[name="q"]')))
+        input_bar.send_keys(name)
+        list_box = WebDriverWait(session.driver, 10).until(EC.presence_of_element_located((By.CSS_SELECTOR, 'ul[id="serpSuggest"][role="listbox"]')))
+        time.sleep(1)
+        lis = WebDriverWait(session.driver, 10).until(EC.presence_of_element_located((By.CSS_SELECTOR, 'li[role="option"]')))
+        lis = list_box.find_elements(By.CSS_SELECTOR, 'li[role="option"]')
+        if len(lis) > 0:
+            lis[0].click() # type: ignore
+            section = WebDriverWait(session.driver, 10).until(EC.presence_of_element_located((By.CSS_SELECTOR, 'section[id="identite"]')))
+            active = False
+            try:
+                active = section.find_element(By.CLASS_NAME, "ui-tag is-Success") is not None
+            except Exception:
+                pass
+            print(f"{name} est encore en activités")
+            return active
+        else:
+            print(f"{name} n'est plus en activités")
+            return False
+    except Exception:
+        print(f"{name} n'est pas trouvée sur societecom -> en activité mis a 'oui' par defaut")
+        return True

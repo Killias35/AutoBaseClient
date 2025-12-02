@@ -16,6 +16,7 @@ def get_villes_utiles(session: Session, regions: list, departements: list, ville
     ret = list[str]()
     for region in regions:
         session.driver.get(ANNUAIRE_EXPERT_COMPTABLE_URL)
+        time.sleep(1)
         try:
             link = session.driver.find_element(By.XPATH, f"//*[contains(text(), '{region}')]")
             link.click()
