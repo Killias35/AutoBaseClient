@@ -27,7 +27,7 @@ def get_pappers_datas(session: Session)-> dict[str, dict[str, list[str]]]:
     datas = {}
     up = True
     tour = 0
-    while len(company_names) < 2 and tour < 3:
+    while len(company_names) < int(nb_company) and tour < 3:
         try:
             time.sleep(1)
             a = WebDriverWait(session.driver, 10).until(EC.presence_of_all_elements_located((By.CSS_SELECTOR, 'div.nom-entreprise a')))

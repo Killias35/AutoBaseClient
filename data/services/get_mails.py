@@ -52,7 +52,7 @@ def extract_emails_from_url(session: Session, url: str)->set[str]:
             return set()
         idx = text.find("@")
         emails = set()
-        while idx != -1:
+        while idx != -1 or len(emails) < 10:
             start = max(0, idx - 64)
             end = min(len(text), idx + 64)
             window = text[start:end]
@@ -60,6 +60,8 @@ def extract_emails_from_url(session: Session, url: str)->set[str]:
                 e = m.group(0).strip(".,;:()[]\"'<>").lower()  # clean trailing punctuation
                 if quick_validate(e):
                     emails.add(e)
+                    if len(emails) >= 10:
+                        break
             idx = text.find("@", idx + 1)
 
         return set(emails)
