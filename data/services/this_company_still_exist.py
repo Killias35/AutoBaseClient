@@ -53,23 +53,35 @@ def this_company_still_exist(session: Session, name : str)-> bool:
             pass
         input_bar = WebDriverWait(session.driver, 10).until(EC.presence_of_element_located((By.CSS_SELECTOR, 'input[name="q"]')))
         input_bar.send_keys(name)
-        list_box = WebDriverWait(session.driver, 10).until(EC.presence_of_element_located((By.CSS_SELECTOR, 'ul[id="serpSuggest"][role="listbox"]')))
-        time.sleep(1)
-        lis = WebDriverWait(session.driver, 10).until(EC.presence_of_element_located((By.CSS_SELECTOR, 'li[role="option"]')))
-        lis = list_box.find_elements(By.CSS_SELECTOR, 'li[role="option"]')
-        if len(lis) > 0:
-            lis[0].click() # type: ignore
-            section = WebDriverWait(session.driver, 10).until(EC.presence_of_element_located((By.CSS_SELECTOR, 'section[id="identite"]')))
-            active = False
-            try:
-                active = section.find_element(By.CLASS_NAME, "ui-tag is-Success") is not None
-            except Exception:
-                pass
-            print(f"{name} est encore en activités")
-            return active
-        else:
-            print(f"{name} n'est plus en activités")
-            return False
+        try:
+            list_box = WebDriverWait(session.driver, 10).until(EC.presence_of_element_located((By.CSS_SELECTOR, 'ul[id="serpSuggest"][role="listbox"]')))
+            time.sleep(1)
+            lis = WebDriverWait(session.driver, 10).until(EC.presence_of_element_located((By.CSS_SELECTOR, 'li[role="option"]')))
+            lis = list_box.find_elements(By.CSS_SELECTOR, 'li[role="option"]')
+            if len(lis) > 0:
+                lis[0].click() # type: ignore
+                section = WebDriverWait(session.driver, 10).until(EC.presence_of_element_located((By.CSS_SELECTOR, 'section[id="identite"]')))
+                success = False
+                try:
+                    success = section.find_element(By.CSS_SELECTOR, ".ui-tag.is-Success") is not None
+                except Exception as e:
+                    print(e)
+                if success:
+                    print(f"{name} est encore en activités")
+                else:
+                    print(f"{name} n'est plus en activités")
+                return success
+            else:
+                print(f"{name} n'est plus en activités")
+                return False
+        except Exception:
+            print(f"{name} n'est pas trouver -> oui par defaut")
+            return True
     except Exception:
-        print(f"{name} n'est pas trouvée sur societecom -> en activité mis a 'oui' par defaut")
+        print(f"{name} erreur lors de la recherche")
         return True
+    
+
+if __name__ == "__main__":
+    session = Session()
+    print(this_company_still_exist(session, "COCERTO & ASSOCIES"))

@@ -16,15 +16,18 @@ def search_duckduckgo(session: Session, query, max_results=5):
     url = "https://google.com/search"
     params = {"q": query}
     session.driver.get(f"{url}?{urlencode(params)}")
-    time.sleep(2)
+    time.sleep(3)
     links = []
-    center = session.driver.find_element(By.ID, "center_col")
-    for a in center.find_elements(By.TAG_NAME, "a"):
-        href = a.get_attribute("href")
-        if href and href.startswith("http"): # type: ignore
-            links.append(href)
-        if len(links) >= max_results:
-            break
+    try:
+        center = session.driver.find_element(By.ID, "center_col")
+        for a in center.find_elements(By.TAG_NAME, "a"):
+            href = a.get_attribute("href")
+            if href and href.startswith("http"): # type: ignore
+                links.append(href)
+            if len(links) >= max_results:
+                break
+    except:
+        pass
     return links
 
 def quick_validate(email):
@@ -52,7 +55,7 @@ def extract_emails_from_url(session: Session, url: str)->set[str]:
             return set()
         idx = text.find("@")
         emails = set()
-        while idx != -1 or len(emails) < 10:
+        while idx != -1 and len(emails) < 10:
             start = max(0, idx - 64)
             end = min(len(text), idx + 64)
             window = text[start:end]

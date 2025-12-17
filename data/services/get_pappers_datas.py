@@ -59,7 +59,7 @@ def get_pappers_datas(session: Session)-> dict[str, dict[str, list[str]]]:
         link = company_links[i]
         name = company_names[i]
         session.driver.get(link)
-        time.sleep(2)
+        time.sleep(3)
         try:
             td = WebDriverWait(session.driver, 10).until(EC.presence_of_element_located((By.CLASS_NAME, 'info-dirigeant')))
             dirigeants = td.find_elements(By.TAG_NAME, 'a')
